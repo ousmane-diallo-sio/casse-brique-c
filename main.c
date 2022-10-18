@@ -19,13 +19,14 @@ void print_confirmation(char* msg) {
 
 int main() {
     printf("------------------------------------------------------------------\n");
-    struct sockaddr_in server_address, client_adress;
+    
     char* msg = "Le message à été transmis avec succès, et oui ça fonctionne";
-    // int server_address_len = sizeof(server_address);
 
-    int server_socket = socket(COMMUNICATION_DOMAIN, SOCK_STREAM, 0);
+    struct sockaddr_in server_address, client_adress;
+    int server_address_len = sizeof(server_address);
+    int server_socket, client_socket;
 
-    if (server_socket < 0) {
+    if ((server_socket = socket(COMMUNICATION_DOMAIN, SOCK_STREAM, 0)) < 0) {
         print_error("Erreur lors de la création du socket");
         return -1;
     }
@@ -46,5 +47,14 @@ int main() {
         return -1;
     }
     print_confirmation("Mise en place du listener.\n");
+    printf("En attente de l'arrivée d'un client...");
+
+    if ((client_socket = accept(server_socket, (struct sockaddr*)&server_address, (socklen_t*)&server_address_len)) < 0) {
+        print_error("Erreur lors de l'ouverture de la connexion");
+        return -1;
+    }
+    print_confirmation("Ouverture de la connexion.\n");
+
+
 
 }
