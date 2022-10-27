@@ -3,11 +3,10 @@
 #include "../services/clean_stdin.h"
 
 int init_server() {
-    printf("\n------------------------------------------------------------------\n");
-    
-    char msg[51];
-    print_action("Saisir du texte :\n");
-    fgets(msg, 50, stdin);
+
+    char server_ip[25] = "127.0.0.1";
+    int server_port = 18000;
+
 
     int remote_input;
     char buffer[1024] = { 0 };
@@ -23,8 +22,8 @@ int init_server() {
     print_confirmation("La socket à bien été créee.\n");
 
     server_address.sin_family = COMMUNICATION_DOMAIN;
-    server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server_address.sin_port = htons(SERVER_PORT);
+    server_address.sin_addr.s_addr = inet_addr(server_ip);
+    server_address.sin_port = htons(server_port);
 
     if (bind(server_socket, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
         print_error("Erreur lors de la liaison avec le port");
@@ -37,12 +36,18 @@ int init_server() {
         return -1;
     }
     print_confirmation("Mise en place du listener. En attente de l'arrivée d'un client...\n");
+    printf("\nAdresse IP -> %s\n", server_ip);
+    printf("Numéro de port -> %d\n", server_port);
 
     if ((client_socket = accept(server_socket, (struct sockaddr*)&server_address, (socklen_t*)&server_address_len)) < 0) {
         print_error("Erreur lors de l'ouverture de la connexion");
         return -1;
     }
     print_confirmation("Ouverture de la connexion.\n");
+
+    char msg[51];
+    print_action("Saisir le message à envoyer :\n");
+    fgets(msg, 50, stdin);
 
     remote_input = read(client_socket, buffer, 1024);
     printf("Contenu du buffer : %s\n", buffer);

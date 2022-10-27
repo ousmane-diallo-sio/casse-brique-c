@@ -6,5 +6,4 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define SERVER_PORT 18000
 #define COMMUNICATION_DOMAIN AF_INET

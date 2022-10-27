@@ -7,14 +7,20 @@ int init_client() {
     int my_socket = 0;
     int remote_input;
     int client_fd;
+
+    char server_ip[30];
+    int server_port = 0;
     
     struct sockaddr_in server_address;
 
-    char msg[51];
+    char msg[51] = "Ceci est un message du client";
     char buffer[1024] = {0};
 
-    print_action("Saisir du texte :\n");
-    fgets(msg, 50, stdin);
+    print_action("Saisissez l'adresse ip du serveur : ");
+    scanf("%s", server_ip);
+
+    print_action("Saisissez le numéro de port : ");
+    scanf("%d", &server_port);
 
     if ((my_socket = socket(COMMUNICATION_DOMAIN, SOCK_STREAM, 0)) < 0) {
         print_error("Erreur lors de la création du socket");
@@ -23,9 +29,9 @@ int init_client() {
     print_confirmation("La socket à bien été créee.\n");
 
     server_address.sin_family = COMMUNICATION_DOMAIN;
-    server_address.sin_port = htons(SERVER_PORT);
+    server_address.sin_port = htons(server_port);
 
-    if (inet_pton(COMMUNICATION_DOMAIN, "127.0.0.1", &server_address.sin_addr) <= 0) {
+    if (inet_pton(COMMUNICATION_DOMAIN, server_ip, &server_address.sin_addr) <= 0) {
         print_error("Adresse IP invalide.");
         return -1;
     }
