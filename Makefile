@@ -1,4 +1,4 @@
-casse-brique: main.o clean_stdin.o console_msg.o client.o server.o map.o play.o
+casse-brique: main.o ./services/clean_stdin.o ./services/console_msg.o ./network/client.o ./network/server.o ./maps/map.o ./game/play.o
 	gcc main.o clean_stdin.o console_msg.o client.o server.o map.o play.o -o casse-brique
 
 main.o: main.c
@@ -26,7 +26,10 @@ clean:
 	rm *.o casse-brique
 
 run:
-	make clean && make && ./casse-brique
+	make && ./casse-brique
+
+clean_run:
+	make && ./casse-brique && make clean
 
 
 

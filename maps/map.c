@@ -17,15 +17,20 @@ Map create_map(char* path) {
   int map_height = 0;
   char** tab = malloc(sizeof(char));
 
-  char ch = 0;
+  char c = 0;
   int line_num = 0;
   int column_num = 0;
 
-  while(ch != EOF) {
-    char c = fgetc(file);
+  while(c != EOF) {
+    c = fgetc(file);
+    //printf("%c", c);
+    printf("ligne : %d ", line_num);
+    printf("column : %d\n", column_num);
+
     if (c == '\n') {
       line_num++;
       column_num = 0;
+      printf("\n");
       continue;
     }
     switch (line_num) {
@@ -36,27 +41,28 @@ Map create_map(char* path) {
       break;
     
     case 1:
-      nb_bomb = (int) c;
+      nb_bomb = c - '0';
       break;
 
     case 2:
       if (c != ' ') {
         if (map_width == 0) {
-          map_width = c;
+          map_width = c - '0';
         } else {
-          map_height = c;
+          map_height = c - '0';
         }
       }
 
     default:
-      tab = realloc(tab, sizeof(char));
-      tab[column_num][line_num] = c;
+      tab = malloc(sizeof(char));
+      tab[line_num-2] = malloc(sizeof(char));
+      tab[line_num -2][column_num] = c;
       break;
     }
     column_num++;
   }
 
-  map_height = line_num - 3;
+  map_height = line_num - 2;
 
   Map out = {
     .path = path,
@@ -76,13 +82,13 @@ void print_map_info(Map map) {
   printf("\nNom de la carte : %s\n", map.name);
   printf("Nb de bombes par défaut : %d\n", map.nb_bomb);
   printf("Largeur de la carte : %d\n", map.width);
-  printf("Hauteur de la carte : %d\n", map.height);
+  printf("Hauteur de la carte : %d\n\n", map.height);
 }
 
 void display_map(Map map) {
   for (int i = 1; i < map.height; i++) {
-    for (int j = 1; i < map.width; i++) {
-      printf("%c", map.tab[i][j]);
+    for (int j = 1; j < map.width; j++) {
+      //printf("%c", map.tab[i][j]);
     }
   }
 }

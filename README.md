@@ -1,7 +1,7 @@
 ## Casse Brique (Partie réseau)
 
 Compiler et exécuter le code : 
-- cc ./game/*.c ./maps/*.c ./network/*.c ./services/*.c -o main
+- make clean_run
 
 Capture d'écran du résultat actuel pour cette partie du projet :
 
