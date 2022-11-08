@@ -1,4 +1,5 @@
 
+#include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "services/console_msg.h"
@@ -28,6 +29,10 @@ int main() {
         case 'd':
             print_confirmation("Vous avez choisi le mode de jeu en solo\n");
             printf("\nEn construction.");
+            printf("Ce qui va suivre est un test à supprimer : \n");
+            Map map = create_map("maps/map1.csv");
+            print_map_info(map);
+            display_map(map);
             break;
 
         case 's':

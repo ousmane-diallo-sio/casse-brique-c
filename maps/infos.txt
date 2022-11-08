@@ -1,0 +1,5 @@
+Les lignes suivantes correspondent à la carte en elle-même. Une carte sera composée de plusieurs caractères, chaque caractère défini ce qui existe à quel emplacement :
+- “x” pour un mur indestructible
+- “m” pour un mur destructible
+- “p” pour un emplacement d’apparition d’un joueur
+- un espace pour une case vide
