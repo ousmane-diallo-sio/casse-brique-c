@@ -1,5 +1,5 @@
-casse-brique: main.o ./services/clean_stdin.o ./services/console_msg.o ./network/client.o ./network/server.o ./maps/map.o ./game/play.o
-	gcc main.o clean_stdin.o console_msg.o client.o server.o map.o play.o -o casse-brique
+casse-brique: main.o ./services/clean_stdin.o ./services/console_msg.o ./services/general.o ./network/client.o ./network/server.o ./maps/map.o ./game/play.o
+	gcc main.o clean_stdin.o console_msg.o general.o client.o server.o map.o play.o -o casse-brique
 
 main.o: main.c
 	gcc -c main.c
@@ -9,6 +9,9 @@ main.o: main.c
 
 ./services/console_msg.o: ./services/console_msg.c ./services/console_msg.h
 	gcc -c ./services/console_msg.c
+
+./services/general.o: ./services/general.c ./services/general.h
+	gcc -c ./services/general.c
 
 ./network/client.o: ./network/client.c ./network/client.h
 	gcc -c ./network/client.c

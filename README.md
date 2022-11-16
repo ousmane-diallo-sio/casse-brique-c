@@ -1,7 +1,6 @@
 ## Casse Brique (Partie réseau)
 
-Compiler et exécuter le code : 
-- make clean_run
+Compiler et exécuter le code : `make clean_run`
 
 Capture d'écran du résultat actuel pour cette partie du projet :
 

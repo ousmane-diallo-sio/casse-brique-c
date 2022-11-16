@@ -7,5 +7,6 @@
 #include <unistd.h>
 #include "services/console_msg.h"
 #include "maps/map.h"
+#include "services/general.h"
 
 #define COMMUNICATION_DOMAIN AF_INET

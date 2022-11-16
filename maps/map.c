@@ -3,7 +3,7 @@
 Map create_map(char* path) {
   FILE* file = fopen(path, "r");
   if (file == NULL) {
-    print_error("Erreur lors de l'ouverture du fichier : ");
+    print_error("Erreur lors de l'ouverture du fichier : \n");
     printf("%s", path);
     exit(EXIT_FAILURE);
   }
@@ -21,16 +21,19 @@ Map create_map(char* path) {
   int line_num = 0;
   int column_num = 0;
 
+
+  int has_read_width = 0;
+  int has_read_height = 0;
+
   while(c != EOF) {
     c = fgetc(file);
     //printf("%c", c);
-    printf("ligne : %d ", line_num);
-    printf("column : %d\n", column_num);
+    // printf("ligne : %d ", line_num);
+    // printf("column : %d\n", column_num);
 
     if (c == '\n') {
       line_num++;
       column_num = 0;
-      printf("\n");
       continue;
     }
     switch (line_num) {
@@ -45,24 +48,32 @@ Map create_map(char* path) {
       break;
 
     case 2:
-      if (c != ' ') {
+      if (c == ' ') has_read_width = 1;
+      if (!has_read_width) {
         if (map_width == 0) {
           map_width = c - '0';
-        } else {
+        } else{
+          map_width = concat_int(map_width, c - '0');
+        }
+      } else if(c != ' ') {
+        if (map_height == 0) {
           map_height = c - '0';
+        } else{
+          map_height = concat_int(map_height, c - '0');
         }
       }
+      break;
 
     default:
-      tab = malloc(sizeof(char));
-      tab[line_num-2] = malloc(sizeof(char));
-      tab[line_num -2][column_num] = c;
+      tab = realloc(tab, sizeof(*tab)*map_height);
+      tab[line_num -3] = malloc(sizeof(**tab)*map_width);
+      tab[line_num -3][column_num] = c;
+      printf("%c", tab[line_num -3][column_num]);
+      if (column_num == map_width - 1) printf("\n");
       break;
     }
     column_num++;
   }
-
-  map_height = line_num - 2;
 
   Map out = {
     .path = path,
@@ -86,9 +97,11 @@ void print_map_info(Map map) {
 }
 
 void display_map(Map map) {
-  for (int i = 1; i < map.height; i++) {
-    for (int j = 1; j < map.width; j++) {
-      //printf("%c", map.tab[i][j]);
+  printf("bref : [%c]\n", map.tab[3][2]);
+  for (int i = 0; i < map.height; i++) {
+    for (int j = 0; j < map.width; j++) {
+      printf("%c", map.tab[i][j]);
     }
+    printf("\n");
   }
 }
