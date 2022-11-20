@@ -1,14 +1,22 @@
-#include "../common.h"
-#include "../services/console_msg.h"
-#include "../services/clean_stdin.h"
+#include "server.h"
 
 int init_server() {
 
-    char server_ip[25] = "127.0.0.1";
+    Map map;
+    Player player;
+    int game_ongoing = 0;
+    
+    FILE *ipconfig = popen("ipconfig getifaddr en0", "r");
+    if (ipconfig == NULL) {
+        print_error("Impossible d'obtenir l'adresse IP de cette machine");
+        exit(1);
+    }
+
+    char server_ip[25];
+    fgets(server_ip, 25, ipconfig);
+
     int server_port = 18000;
 
-
-    int remote_input;
     char buffer[1024] = { 0 };
 
     struct sockaddr_in server_address, client_adress;
@@ -45,15 +53,18 @@ int init_server() {
     }
     print_confirmation("Ouverture de la connexion.\n");
 
-    char msg[51];
-    print_action("Saisir le message à envoyer :\n");
-    fgets(msg, 50, stdin);
+    map = chooseMap();
+    player = map.players[0];
 
-    remote_input = read(client_socket, buffer, 1024);
-    printf("Contenu du buffer : %s\n", buffer);
+    send(client_socket, map.path, strlen(map.path), 0);
+    display_map(map);
 
-    send(client_socket, msg, strlen(msg), 0);
-    print_confirmation("Le message de bienvenue à été envoyé.\n");
+    game_ongoing = 1;
+
+    do{
+        send_input(client_socket);
+        wait_for_input(client_socket, buffer, &map);
+    } while(game_ongoing == 1);
 
     close(client_socket);
     shutdown(server_socket, SHUT_RDWR);
@@ -62,4 +73,33 @@ int init_server() {
 
     return 0;
 
+}
+
+
+void send_input(int remote_socket) {
+    char command = '\0';
+    print_action("Saississez une commande :\n");
+    // do{
+    //     command = getchar();
+    //     if (trigger_command(command) == 0) {
+    //         command = '\0';
+    //         print_bad_input();
+    //     }
+    // } while (command == '\0');
+    //send(remote_socket, &command, strlen(&command), 0);
+
+    char msg[51];
+    fgets(msg, 50, stdin);
+    send(remote_socket, msg, strlen(msg), 0);
+}
+
+void wait_for_input(int remote_socket, char* buffer, Map *map) {
+    printf("En attente de l'adversaire...\n");
+    read(remote_socket, buffer, 1024);
+    printf("Contenu du buffer : %s\n", buffer);
+    if (buffer[1] != 0) {
+        trigger_action(map, buffer);
+    } else {
+        trigger_command(buffer[0]);
+    }
 }

@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "console_msg.h"
 
 void print_error(char* msg) {
     printf("\033[0;31m");

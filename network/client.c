@@ -1,8 +1,10 @@
-#include "../common.h"
-#include "../services/console_msg.h"
-#include "../services/clean_stdin.h"
+#include "client.h"
 
 int init_client() {
+
+    Map map;
+    Player player;
+    int game_ongoing = 0;
 
     int my_socket = 0;
     int remote_input;
@@ -41,13 +43,16 @@ int init_client() {
         print_error("Erreur lors de l'ouverture de la connexion. Vérifiez que le serveur est bien actif.");
         return -1;
     }
+
     print_confirmation("Ouverture de la connexion.\n");
+    game_ongoing = 1;
 
-    send(my_socket, msg, strlen(msg), 0);
-    print_confirmation("Le message à bien été transmis.\n");
-
-    remote_input = read(my_socket, buffer, 1024);
-    printf("Contenu du buffer : %s\n", buffer);
+    wait_for_input(my_socket, buffer, &map);
+    
+    do{
+        wait_for_input(my_socket, buffer, &map);
+        send_input(my_socket);
+    } while(game_ongoing == 1);
 
     close(client_fd);
 

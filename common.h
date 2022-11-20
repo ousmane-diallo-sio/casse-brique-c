@@ -5,8 +5,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <string.h>
 #include "services/console_msg.h"
-#include "maps/map.h"
 #include "services/general.h"
+#include "services/clean_stdin.h"
 
 #define COMMUNICATION_DOMAIN AF_INET

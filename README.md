@@ -1,7 +1,5 @@
-## Casse Brique (Partie réseau)
+## Casse Brique
 
 Compiler et exécuter le code : `make clean_run`
 
-Capture d'écran du résultat actuel pour cette partie du projet :
-
-![Screenshot 1](screenshots/screen1.png)
+Lien du dépôt Github : https://github.com/ousmane-diallo-sio/casse-brique-c

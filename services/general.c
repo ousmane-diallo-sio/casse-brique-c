@@ -1,6 +1,4 @@
-#include  <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "general.h"
 
 int concat_int(int a, int b) {
     char s1[20];

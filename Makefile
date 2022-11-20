@@ -1,5 +1,5 @@
-casse-brique: main.o ./services/clean_stdin.o ./services/console_msg.o ./services/general.o ./network/client.o ./network/server.o ./maps/map.o ./game/play.o
-	gcc main.o clean_stdin.o console_msg.o general.o client.o server.o map.o play.o -o casse-brique
+casse-brique: main.o ./services/clean_stdin.o ./services/console_msg.o ./services/general.o ./network/client.o ./network/server.o ./maps/map.o ./maps/coordinates.o ./game/play.o ./game/player.o
+	gcc main.o clean_stdin.o console_msg.o general.o client.o server.o map.o coordinates.o play.o player.o -o casse-brique
 
 main.o: main.c
 	gcc -c main.c
@@ -22,8 +22,14 @@ main.o: main.c
 ./maps/map.o: ./maps/map.c ./maps/map.h
 	gcc -c ./maps/map.c
 
+./maps/coordinates.o: ./maps/coordinates.c ./maps/coordinates.h
+	gcc -c ./maps/coordinates.c
+
 ./game/play.o: ./game/play.c ./game/play.h
 	gcc -c ./game/play.c
+
+./game/player.o: ./game/player.c ./game/player.h
+	gcc -c ./game/player.c
 
 clean:
 	rm *.o casse-brique
