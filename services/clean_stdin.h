@@ -1,0 +1,1 @@
+int clean_stdin();
